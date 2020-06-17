@@ -1,4 +1,4 @@
-Autor: Martín Gonzźlez - 2020
+Autor: Martín González - 2020
 
 # Introduccion
 El proyecto es ...
