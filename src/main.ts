@@ -78,11 +78,41 @@ class Main implements GETResponseListener, EventListenerObject, POSTResponseList
 
     handleEvent(evt:Event):void
     {
-        let sw: HTMLElement = this.myf.getElementByEvent(evt);
-        console.log("click en device:"+sw.id);
+        let el: HTMLElement = this.myf.getElementByEvent(evt);
+        let elTodos: HTMLElement = this.myf.getElementById("todos");
+        let elLamparas: HTMLElement = this.myf.getElementById("lamparas");
+        let elPersianas: HTMLElement = this.myf.getElementById("persianas");
+       
+        console.log("click en device:"+el.id);
 
-        let data:object = {"id":sw.id,"state":this.view.getSwitchStateById(sw.id)};
-        this.myf.requestPOST("devices",data,this);
+        // Detecta si el elemento clickeado es un filtro o switch
+
+        if(el.id.toString() == "todos") 
+        {
+            elTodos.parentElement.className = "active";
+            elLamparas.parentElement.className = "";
+            elPersianas.parentElement.className = "";
+            this.myf.requestGET("devices?filter=0",this);
+        }
+        else if(el.id.toString() == "lamparas") 
+        {
+            elTodos.parentElement.className = "";
+            elLamparas.parentElement.className = "active";
+            elPersianas.parentElement.className = "";
+            this.myf.requestGET("devices?filter=1",this);
+        }
+        else if(el.id.toString() == "persianas") 
+        {
+            elTodos.parentElement.className = "";
+            elLamparas.parentElement.className = "";
+            elPersianas.parentElement.className = "active";
+            this.myf.requestGET("devices?filter=2",this);
+        }
+        else
+        {
+            let data:object = {"id":el.id,"state":this.view.getSwitchStateById(el.id)};
+            this.myf.requestPOST("devices",data,this);
+        }
     }
 
     handleGETResponse(status:number,response:string):void{
@@ -114,7 +144,11 @@ class Main implements GETResponseListener, EventListenerObject, POSTResponseList
 
       this.view = new ViewMainPage(this.myf);
 
-      this.myf.requestGET("devices",this);
+      this.myf.confiClick("todos", this);
+      this.myf.confiClick("lamparas", this);
+      this.myf.confiClick("persianas", this);
+
+      this.myf.requestGET("devices?filter=0",this);
     } 
 } 
  
