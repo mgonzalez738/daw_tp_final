@@ -8,7 +8,7 @@ El objeto de este proyecto es finalizar la asignatura Desarrollo de Aplicaciones
 
 La aplicación consiste en una SPA (Single Page Aplicaction) que simula la autmatización del  accionamiento de elementos domésticos (Lámparas y Persianas).
 
-![Aplicacion Smart HOME](/doc/app.jpg?raw=true "Smart HOME")
+![Aplicacion Smart HOME](/doc/appFiltro.jpg?raw=true "Smart HOME")
 
 ## Herramientas utilizadas
 
@@ -23,9 +23,12 @@ Los servicios requeridos Node.js y MySQL para la ejecución, asi como el compila
 
 ## Prerequisitos
 
-La aplicación requiere contar con Docker Engine instalado.
+La aplicación requiere contar con Docker Engine y Docker Compose instalados.
 
-En el link https://docs.docker.com/engine/install/ubuntu/ se muestran los pasos para la intalación de Docker Engie en las ultimas versiones de Ubuntu.
+En el link https://docs.docker.com/engine/install/ubuntu/ se muestran los pasos para la intalación de Docker Engie en las ultimas versiones de Ubuntu. 
+
+En el link https://docs.docker.com/compose/install/ se muestran los pasos para la instalación de Docker Compose.
+
 
 ## Correr la aplicación
 
@@ -35,36 +38,23 @@ Clonar o descargar la aplicacion desde Git Hub.
 git clone https://github.com/mgonzalez738/daw_tp_final.git
 ```
 
-El primer paso será detener todos los contenedores corriendo en la máquina.
+El directorio raiz de la aplicación ejecutar.
 ```sh
-docker stop $(docker ps -a -q)
+docker-compose up
 ```
 
-El siguiente paso será chequear la red de Docker que se utilizará para conectar los contenedores entre sí con el siguiente comando.
-```sh
-docker network ls | grep mysql-net
-```
-Si el comando anterior no arroja info, será necesario crearla con el siguiente comando.
-```sh
-docker network create --driver bridge mysql-net
-```
+Chequear que la aplicación esté corriendo en http://localhost:8000.
 
-Con la red creada será necesario ejecutar el contenedor con la base de datos. Para eso, dentro del directorio raíz del proyecto ejecutar el siguiente comando, pasándole como argumento la red a utilizar y el directorio donde se encuentra la base de datos.
-```sh
-./start_mysql.sh mysql-net "$PWD"/db
-```
-
-A continuación correr el gestor de base de datos PHPMyAdmin con el siguiente comando, especificando la red de Docker, el nombre del servidor de base de datos y el puerto.
-```sh
-./run_phpadmin.sh mysql-net mysql-server 8085
-```
 Chequear que PHPMyAdmin está funcionando en http://localhost:8085.
 
-Finalmente ejecutar el servidor de NodeJS con la aplicación creada hasta el momento pasando como argumento el directorio actual, especificando que el entry point de la aplicación será ws/index.js, corriendo la aplicación en el puerto localhost 8000 y sobre la red mysql-net, donde se encuentran la base de datos y el administrador de la base de datos.
+Para ingresar a la base de datos se debe utilizar: 
+1. User: root 
+2. Pass: userpass
+
+Para detener la aplicación ejecutar.
 ```sh
-./serve_node_app_net.sh "$PWD" ws/index.js 8000 mysql-net
+docker-compose down
 ```
-Chequear que la aplicación esté corriendo en http://localhost:8000.
 
 ## Contribuir
 Para contribuir realizar un pull request con las sugerencias.

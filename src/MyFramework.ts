@@ -74,4 +74,9 @@ class MyFramework{
         xhr.send(JSON.stringify(data));
     }
 
+    confiClick(id:string, listener:EventListenerObject):void {
+        let el:HTMLElement = this.getElementById(id);
+        el.addEventListener("click", listener);
+    }
+
 }
